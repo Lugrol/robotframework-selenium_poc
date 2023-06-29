@@ -1,3 +1,1 @@
-Find out how to save screenshots in evidence directory automatically
 Save screenshots with their test's name + index
-Make the report take the screenshots from evidence directory

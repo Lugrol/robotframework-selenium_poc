@@ -1,40 +1,57 @@
 *** Settings ***
 Library					SeleniumLibrary
+Variables				../variables/map.py
+Variables				../variables/errors.py
 Test Setup				Open Login Page
 Test Teardown				Close Browser
 
 *** Variables ***
-${PASS}					secret_sauce
-${LOGIN_PAGE}				https://www.saucedemo.com/
-${INVENTORY_PAGE}			https://www.saucedemo.com/inventory.html
-${UNKNOWN_USER_ERROR}			Epic sadface: Username and password do not match any user in this service
-${LOCKEDOUT_USER_ERROR}			Epic sadface: Sorry, this user has been locked out.
+${VALID_USER}				standard_user
+${LOCKED_USER}				locked_out_user	
+${PASSWORD}				secret_sauce
 
 *** Test Cases ***
-Log in with valid user
-	Log in as			standard_user	${PASS}
-	Wait Until Location is not	${LOGIN_PAGE}
-	Location should be		${INVENTORY_PAGE}	
 
-Log in with invalid user
-	Log in as			invalid_user	${PASS}
+Empty Username
+	Log in as			${EMPTY}		${PASSWORD}
+	Error should be			${EMPTY_USERNAME_ERROR}
+
+Empty Password
+	Log in as			${VALID_USER}		${EMPTY}
+	Error should be			${EMPTY_PASSWORD_ERROR}
+	
+Invalid Username
+	Log in as			'hacker' OR 1=1		${PASSWORD}
 	Error should be			${UNKNOWN_USER_ERROR}
 
-Log in with locked out user
-	Log in as			locked_out_user	${PASS}
+Invalid Password
+	Log in as			${VALID_USER}		'hacker' OR 1=1
+	Error should be			${UNKNOWN_USER_ERROR}
+
+Locked out user
+	Log in as			${LOCKED_USER}		${PASSWORD}
 	Error should be			${LOCKEDOUT_USER_ERROR}
+
+Access without login
+	Go to				${URL_INVENTORY}
+	Error should be			${NOT_LOGGED_IN_ERROR}
+
+Valid user
+	Log in as			${VALID_USER}		${PASSWORD}
+	Wait Until Location is not	${URL_LOGIN}
+	Location should be		${URL_INVENTORY}	
 
 *** Keywords ***
 Open Login Page
-	Open Browser			${LOGIN_PAGE}	Firefox	service_log_path=${{"../driver_logs/geckodriver"}}
+	Open Browser			${URL_LOGIN}	Firefox		service_log_path=${{"driver_logs/geckodriver"}}
 
 Log in as
-	[Arguments]			${username}	${password}	
-	Input Text			id:user-name	${username}
-	Input Password			name:password	${password}	#Input Password hides the password in the INFO level
-	Click Button 			id:login-button
+	[Arguments]			${username}		${password}	
+	Input Text			${INPUT_USERNAME}	${username}
+	Input Password			${INPUT_PASSWORD}	${password}
+	Click Button 			${BUTTON_LOGIN}
 
 Error should be
 	[Arguments]			${error_expected}
-	${error_text}=			Get Text	class:error-message-container
-	Should Be Equal			${error_text}	${error_expected}
+	${error_text}=			Get Text		${ELEMENT_ERROR_CONTAINER}
+	Should Match			${error_text}		${error_expected}

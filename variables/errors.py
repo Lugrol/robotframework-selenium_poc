@@ -1,0 +1,5 @@
+EMPTY_USERNAME_ERROR			="Epic sadface: Username is required"
+EMPTY_PASSWORD_ERROR			="Epic sadface: Password is required"
+UNKNOWN_USER_ERROR			    ="Epic sadface: Username and password do not match any user in this service"
+LOCKEDOUT_USER_ERROR			="Epic sadface: Sorry, this user has been locked out."
+NOT_LOGGED_IN_ERROR             ="Epic sadface: You can only access '/*.html' when you are logged in."
