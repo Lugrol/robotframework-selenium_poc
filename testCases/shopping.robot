@@ -30,7 +30,7 @@ Disable checkout button if cart is empty
 *** Keywords ***
 # -- Setup --
 Open Login Page
-	Open browser			${URL_LOGIN}	Firefox
+	Open browser			${URL_LOGIN}	Firefox	service_log_path=${{"../driver_logs/geckodriver"}}
 
 # -- Users --
 a valid user is logged in
