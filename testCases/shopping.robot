@@ -1,3 +1,4 @@
+# -*- coding: robot -*-
 *** Settings ***
 Library						SeleniumLibrary
 Variables					../variables/map.py		#Separate file with the locators of page elements.
@@ -15,7 +16,7 @@ ${ZIP_CODE}		    			123456
 *** Test Cases ***
 # In this test case, I took the
 # high-level approach, using a
-# BDD-style keyword definition	
+# BDD-style keyword definition
 
 Clear cart after checkout completion
 	Given valid user is logged in
@@ -77,7 +78,7 @@ Buy a product
 	click on the continue button
 	click on the finish button
 	page is the "checkout complete" page
-	
+
 # -- Validation --
 
 Cart is empty

@@ -1,3 +1,4 @@
+# -*- coding: robot -*-
 *** Settings ***
 Library					SeleniumLibrary
 Variables				../variables/map.py
@@ -11,7 +12,7 @@ ${LOCKED_USER}				locked_out_user
 ${PASSWORD}				secret_sauce
 
 *** Test Cases ***
-
+# Data-driven Testing Strategy example
 Empty Username
 	Log in as			${EMPTY}			${PASSWORD}
 	Error should be			${EMPTY_USERNAME_ERROR}
